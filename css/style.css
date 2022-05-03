@@ -1,0 +1,14 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#avatar {
+  border-style: dotted;
+}
+
+#sketch {
+  padding: 0.4rem;
+  border-style: dotted;
+}
