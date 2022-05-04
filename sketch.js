@@ -29,13 +29,11 @@ const config = {
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
 }
-console.log(firebase)
 
 const database = firebase.database()
 const ref = database.ref("db")
 
 const resgitreNewAvatar = (username, avatarParams) => {
-  //return ref.child(`waves/${username}`).set(avatarParams)
   ref.child(`waves/${username}`).once("value", snapshot => {
     if (snapshot.exists()) {
       alert(`please choose another username`)
@@ -167,7 +165,7 @@ function saveClicked() {
 
 function setupBGWaves() {
   colorchange = PARAMS.WCSin
-  console.log("colorchange")
+
   bgWaveHeight = (1 / 6) * height
   waveDistance = (1 / 6) * height
   let alpha = 255
@@ -175,7 +173,6 @@ function setupBGWaves() {
   bgSine.fill = true
   bgSine.fillH = height - (1 / 3) * height
   bgSine.color = color(colorchange, 206, 0, alpha)
-  // bgSine.color = color(135,206,250,alpha)
   bgSquare = new SquareWave(0, (1 / 3) * height + waveDistance, width, bgWaveHeight)
   bgSquare.fill = true
   bgSquare.fillH = height - (1 / 3) * height
@@ -187,7 +184,7 @@ function setupBGWaves() {
   bgSawtooth = new SawtoothWave(0, (1 / 3) * height + waveDistance * 3, width, bgWaveHeight)
   bgSawtooth.fill = true
   bgSawtooth.fillH = height - (1 / 3) * height
-  bgSawtooth.color = color(0, 255, 255, alpha)
+  bgSawtooth.color = color(255, 255, 255, alpha)
 }
 
 function preload() {}
@@ -236,4 +233,5 @@ function changeColor() {
   bgSine.color = color(colorchange, 100, 100, alpha)
   bgSquare.color = color(colorchange - 100, 100, 100, alpha)
   bgTriangle.color = color(360 - colorchange, 100, 100, alpha)
+  bgSawtooth.color = color(460 - colorchange, 100, 100, alpha)
 }
