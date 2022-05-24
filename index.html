@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,400i,700,700i&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
     <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="main.css" />
 
        <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script src="libraries/p5.min.js"></script>
@@ -21,30 +20,47 @@
     <script src="libraries/dat.gui.min.js"></script>
   </head>
   <body>
-    <header class="header-bar bg-primary mb-3">
-      <div class="container d-flex flex-column flex-md-row align-items-center p-3">
-        <h4 class="my-0 mr-md-auto font-weight-normal">
-          <a href="/" class="text-white">THE INFINITE WAVESFLOOR</a>
-        </h4>
-          <a class="btn btn-sm btn-success mr-2" href="/create-post"> Create Avatar </a>
-          <a class="btn btn-sm btn-success mr-2" href="/create-post"> Visualisation </a>
-        </div>
-      </div>
+    <div id="splash-screen">
+      <p id="splash-close">X</p>
+      <p>The infinite vibration, the tool for sharing your MOOD! <br><br>
+         Good, or bad, use the 4 waves to generate the perfect position of how you feel today.
+         <br><br>
+          After that, save them and find them back in the infinite vibe 
+       <br> <br></p>
+    </div>
+
+    <header class="header-pink">
     </header>
+    <div class="header-flex">
+      <div class="header-title">
+        <a class="header-a" href="/">  <h1 class="header-h1 pt-3 m-0">THe infinite ViBRaTion</h1></a>
+        <h3 class="header-h3 pl-4">Express your Mood!</h3>
+      </div>
+       
+     
+        <a class="btn-vib btn-color-1 btn mt-2 header-title " href="/"> Create Avatar </a>
+        <a class="btn-vib btn-color-2 btn mt-2 header-title " href="/comingsoon.html"> Visualisation </a>
+      </div>
+    </div>
  
    
-    <div   id="sketch-form" class="container container py-md-5">
-      <h3 class="text-muted">Express your Vibration !</h3>
+    <div id="sketch-form" class="container">
+     
     
-        <div class="form-group">
+        <div class="form-group inputs">
           <label for="username" class="text-muted mb-1">
             <small>Username</small>
           </label>
           <input autofocus required name="username" id="username" class="form-control form-control-lg form-control-title" type="text" placeholder="Your unique username" autocomplete="off" />
         </div>
         
-        <div id="sketch" class="form-group">        
+        <div id="sketch-container" class="form-group">  
+          <div id="sketch"></div>
+          <div id="GUI">
+          </div>   
+           
         </div>
+        <div id="btn-validate-group" class="form-group"></div>
 
     
     </div>
