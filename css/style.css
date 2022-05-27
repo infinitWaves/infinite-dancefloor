@@ -254,7 +254,7 @@ body {
   color: #aaaaaa;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 571px) {
   .header-pink {
     position: absolute;
     background: #e9bbff;
@@ -265,9 +265,14 @@ body {
     border-bottom-right-radius: 100px;
   }
 
+}
+
+@media only screen and (max-width: 800px) {
+
   #canvas0 {
-    width: 70% !important;
-    height: 70% !important;
+    width: 85% !important;
+    height: 85% !important;
+    border-radius: 30px;
   }
 
   #GUI {
