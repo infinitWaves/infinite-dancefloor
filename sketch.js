@@ -12,6 +12,7 @@ let p5Caneva
 let btnSaveMyFirstAvatar
 let btnSaveAnotherAvatar
 let userName
+let mySound = new Audio("ondes.mp4")
 
 const config = {
   apiKey: "AIzaSyDfC7SqXVAGR3ekWeNKn5Ja-zxSthMOTzk",
@@ -77,6 +78,7 @@ const PARAMS = {
 
 //======================================================================
 function setup() {
+  mySound.loop = true
   userName = document.querySelector("#username")
 
   function saveAnotherAvatar() {
@@ -90,10 +92,9 @@ function setup() {
       FirebaseDatabaseService.resgitreNewAvatar(userName.value, { avatars: [PARAMS] })
     }
   }
-  console.log(windowHeight)
 
   p5Caneva = createCanvas((3 / 5) * windowHeight, (3 / 5) * windowHeight)
-  p5Caneva.parent("sketch")
+
   setupGui()
 
   btnSaveMyFirstAvatar = createButton("Save My First Avatar")
@@ -121,11 +122,13 @@ function setup() {
   sketch = document.querySelector("#GUI")
   guidome = document.querySelector("#gui")
   sketch.appendChild(guidome)
+  p5Caneva.parent("sketch-container")
 
   let btnclosesblash = document.querySelector("#splash-close")
   btnclosesblash.addEventListener("click", e => {
     let splash = document.querySelector("#splash-screen")
     splash.style.display = "none"
+    //mySound.play()
   })
 }
 

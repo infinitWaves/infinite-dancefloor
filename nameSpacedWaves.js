@@ -1,16 +1,16 @@
 class Wave {
-  constructor(x, y, w, h) {
-    console.log("In constructor")
+  constructor(x, y, w, h, ctx) {
+    this.ctx = ctx
     this.x = x
     this.y = y
     this.w = w
     this.h = h
-    this.color = p5_sk.color(0, 0, 0)
+    this.color = this.ctx.color(0, 0, 0)
     this.lineWidth = 10
     this.amplitude = 1
     this.waveNumber = 2
-    this.pulse = p5_sk.TWO_PI * 0.0 // 2 * PI * nombre de pulsation par seconde
-    this.phase = (3 * p5_sk.PI) / 2
+    this.pulse = this.ctx.TWO_PI * 0.0 // 2 * PI * nombre de pulsation par seconde
+    this.phase = (3 * this.ctx.PI) / 2
     this.lastUpdate = this.getTime()
     this.fill = true
     this.fillH = 0
@@ -22,15 +22,15 @@ class Wave {
   }
 
   getAngle(x) {
-    return p5_sk.map(x, 0, this.w, this.phase, p5_sk.TWO_PI * this.waveNumber + this.phase)
+    return this.ctx.map(x, 0, this.w, this.phase, this.ctx.TWO_PI * this.waveNumber + this.phase)
   }
 
   getWaveValue(angle) {
-    return this.amplitude * p5_sk.sin(angle)
+    return this.amplitude * this.ctx.sin(angle)
   }
 
   getYValue(waveValue) {
-    return p5_sk.map(waveValue, -1, 1, 0, this.h)
+    return this.ctx.map(waveValue, -1, 1, 0, this.h)
   }
 
   update() {
@@ -38,57 +38,61 @@ class Wave {
     let elapsed = now - this.lastUpdate
     this.lastUpdate = now
     this.phase += this.pulse * (elapsed / 1000)
-    this.phase %= p5_sk.TWO_PI
+    this.phase %= this.ctx.TWO_PI
   }
 
   display() {
     this.update()
-    p5_sk.push()
-    p5_sk.translate(this.x, this.y)
+    this.ctx.push()
+    this.ctx.translate(this.x, this.y)
 
     if (!this.fill) {
-      p5_sk.noFill()
-      p5_sk.stroke(this.color)
-      p5_sk.strokeWeight(this.lineWidth)
+      this.ctx.noFill()
+      this.ctx.stroke(this.color)
+      this.ctx.strokeWeight(this.lineWidth)
     } else {
-      p5_sk.noStroke()
-      p5_sk.fill(this.color)
+      this.ctx.noStroke()
+      this.ctx.fill(this.color)
     }
-    p5_sk.beginShape()
+    this.ctx.beginShape()
     for (let x = 0; x < this.w; x++) {
-      p5_sk.vertex(x, this.getYValue(this.getWaveValue(this.getAngle(x))))
+      this.ctx.vertex(x, this.getYValue(this.getWaveValue(this.getAngle(x))))
     }
     if (this.fill) {
-      p5_sk.vertex(this.w, this.fillH)
-      p5_sk.vertex(0, this.fillH)
-      p5_sk.endShape(p5_sk.CLOSE)
+      this.ctx.vertex(this.w, this.fillH)
+      this.ctx.vertex(0, this.fillH)
+      this.ctx.endShape(this.ctx.CLOSE)
     } else {
-      p5_sk.endShape()
+      this.ctx.endShape()
     }
-    p5_sk.noFill()
-    p5_sk.pop()
+    this.ctx.noFill()
+    this.ctx.pop()
   }
 }
 
 //======================================================================
 
 class SineWave extends Wave {
+  constructor(x, y, w, h, ctx) {
+    super(x, y, w, h, ctx)
+  }
+
   getWaveValue(angle) {
-    return this.amplitude * p5_sk.sin(angle)
+    return this.amplitude * this.ctx.sin(angle)
   }
 }
 
 //======================================================================
 
 class SquareWave extends Wave {
-  constructor(x, y, w, h) {
-    super(x, y, w, h)
+  constructor(x, y, w, h, ctx) {
+    super(x, y, w, h, ctx)
     this.phase = -0.005
   }
 
   getWaveValue(angle) {
-    let newAngle = angle % p5_sk.TWO_PI
-    if (newAngle > p5_sk.PI || (newAngle < 0 && newAngle > -p5_sk.PI)) {
+    let newAngle = angle % this.ctx.TWO_PI
+    if (newAngle > this.ctx.PI || (newAngle < 0 && newAngle > -this.ctx.PI)) {
       return -1 * this.amplitude
     } else {
       return 1 * this.amplitude
@@ -99,27 +103,27 @@ class SquareWave extends Wave {
 //======================================================================
 
 class TriangleWave extends Wave {
-  constructor(x, y, w, h) {
-    super(x, y, w, h)
-    this.phase = p5_sk.PI / 2 - 0.01
+  constructor(x, y, w, h, ctx) {
+    super(x, y, w, h, ctx)
+    this.phase = this.ctx.PI / 2 - 0.01
   }
 
   getWaveValue(angle) {
     //LA FONCTION DE L'ONDE QUI VA DEFINIR onde, PRENDS UN ANGLE EN PARAMETRE ET RETOURNE UNE VALEURE ENTRE -1 ET 1
-    return ((2 * this.amplitude) / p5_sk.PI) * p5_sk.asin(p5_sk.sin(angle))
+    return ((2 * this.amplitude) / this.ctx.PI) * this.ctx.asin(this.ctx.sin(angle))
   }
 }
 
 //======================================================================
 
 class SawtoothWave extends Wave {
-  constructor(x, y, w, h) {
-    super(x, y, w, h)
+  constructor(x, y, w, h, ctx) {
+    super(x, y, w, h, ctx)
     this.phase = -0.01
   }
 
   getWaveValue(angle) {
-    return ((2 * this.amplitude) / p5_sk.PI) * p5_sk.atan(1 / p5_sk.tan(angle / 2))
+    return ((2 * this.amplitude) / this.ctx.PI) * this.ctx.atan(1 / this.ctx.tan(angle / 2))
   }
 }
 
