@@ -264,9 +264,10 @@ body {
     border-bottom-left-radius: 100px;
     border-bottom-right-radius: 100px;
   }
-  #sketch-container{
-  padding: 0 1rem;
-    overflow: hidden;
+
+  #canvas0 {
+    width: 80% !important;
+    height: 80% !important;
   }
 }
 
