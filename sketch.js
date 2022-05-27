@@ -139,7 +139,6 @@ function draw() {
 
   displayBGWaves()
   changeColor()
-  noLoop()
 
   loop()
 }
