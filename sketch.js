@@ -119,8 +119,9 @@ function setup() {
 
   //=====================================================================
   sketch = document.querySelector("#GUI")
-  guidome = document.querySelector("#gui")
+  let guidome = document.querySelector("#gui")
   sketch.appendChild(guidome)
+  p5Caneva.id("canvas0")
   p5Caneva.parent("sketch-container")
 
   let btnclosesblash = document.querySelector("#splash-close")
