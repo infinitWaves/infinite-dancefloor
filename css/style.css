@@ -266,8 +266,13 @@ body {
   }
 
   #canvas0 {
+    width: 70% !important;
+    height: 70% !important;
+  }
+
+  #GUI {
     width: 80% !important;
-    height: 80% !important;
+    height:  80% !important;
   }
 }
 
