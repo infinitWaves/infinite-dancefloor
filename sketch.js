@@ -49,7 +49,6 @@ const addNewAvatar = (username, avatarParams) => {
       alert(`You avatar is saved`)
     } else {
       alert(`This username "${username}"  doesn't exist`)
-      return
     }
   })
 }
@@ -128,7 +127,7 @@ function setup() {
   btnclosesblash.addEventListener("click", e => {
     let splash = document.querySelector("#splash-screen")
     splash.style.display = "none"
-    //mySound.play()
+    mySound.play()
   })
 }
 
