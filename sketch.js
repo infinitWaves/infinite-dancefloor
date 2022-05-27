@@ -150,10 +150,6 @@ function setupGui() {
   gui.closed = true
   gui.domElement.id = "gui"
 
-  gui.add(PARAMS, "Saddy<, >Happy").min(0).max(1)
-  gui.add(PARAMS, "Introvert<,>Extravert").min(0).max(10)
-  gui.add(PARAMS, "Energy").min(-5).max(5)
-  gui.add(PARAMS, "This Creature Is High").min(0).max(1.5)
   gui.addColor(PARAMS, "Aura").onChange(update)
 
   gui.add(PARAMS, "Full Vibe1").onChange(function (value) {
@@ -175,6 +171,11 @@ function setupGui() {
     bgSawtooth.fill = value
   })
   gui.addColor(PARAMS, "Vibe4").onChange(update)
+
+  gui.add(PARAMS, "Saddy<, >Happy").min(0).max(1)
+  gui.add(PARAMS, "Introvert<,>Extravert").min(0).max(10)
+  gui.add(PARAMS, "Energy").min(-5).max(5)
+  gui.add(PARAMS, "This Creature Is High").min(0).max(1.5)
 }
 
 var update = function () {
