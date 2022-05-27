@@ -124,12 +124,13 @@ function setup() {
   p5Caneva.parent("sketch-container")
 
   let btnclosesblash = document.querySelector("#splash-close")
-  btnclosesblash.addEventListener("click", e => {
+  btnclosesblash.addEventListener("click", () => {
     let splash = document.querySelector("#splash-screen")
     splash.style.display = "none"
     mySound.play()
   })
 }
+
 
 function draw() {
   background(PARAMS.Aura)
