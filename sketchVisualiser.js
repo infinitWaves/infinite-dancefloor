@@ -52,6 +52,7 @@ let sketch = p => {
 
   p.setup = () => {
     p.p5Caneva = p.createCanvas(GRID_CELL_SIZE, GRID_CELL_SIZE)
+    p.p5Caneva.addClass("zoom-in");
     p.p5Caneva.parent("dancing_floor")
   }
 
@@ -80,56 +81,56 @@ const displayMyAvatars = username => {
   sketches_container.innerHTML = ""
   user_avatars = []
   database.ref(`db/waves/${username}`).on(
-    "value",
-    snapshot => {
-      Object.values(snapshot.val()).forEach(avat =>
-        Object.values(avat).forEach(design => {
-          user_avatars.push(design)
+      "value",
+      snapshot => {
+        Object.values(snapshot.val()).forEach(avat =>
+            Object.values(avat).forEach(design => {
+              user_avatars.push(design)
+            })
+        )
+
+        user_avatars.forEach(design => {
+          p5_sk = new p5(sketch)
+          p5_sk.design = design
+          sketches.push(p5_sk)
+
+          let bgWaveHeight = (-1 / 3) * SKETCH_SIZE
+          let waveDistance = (1 / 6) * SKETCH_SIZE
+
+          p5_sk.bgSine = new SineWave(0, (1 / 3) * SKETCH_SIZE, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgSine.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgSine.color = p5_sk.color(design.Vibe1)
+          p5_sk.bgSine.fill = design["Full Vibe1"]
+          p5_sk.bgSquare = new SquareWave(0, (1 / 3) * SKETCH_SIZE + waveDistance, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgSquare.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgSquare.color = p5_sk.color(design.Vibe2)
+          p5_sk.bgSquare.fill = design["Full Vibe2"]
+
+          p5_sk.bgSquare.y = (1 / 3) * SKETCH_SIZE + waveDistance * design["This Creature Is High"]
+
+          p5_sk.bgTriangle = new TriangleWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 2, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgTriangle.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgTriangle.color = p5_sk.color(design.Vibe3)
+          p5_sk.bgTriangle.fill = design["Full Vibe3"]
+
+          p5_sk.bgTriangle.y = (1 / 3) * SKETCH_SIZE + 2 * waveDistance * design["This Creature Is High"]
+
+          p5_sk.bgSawtooth = new SawtoothWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 3, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgSawtooth.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgSawtooth.color = p5_sk.color(design.Vibe4)
+          p5_sk.bgSawtooth.fill = design["Full Vibe4"]
+
+          p5_sk.bgSawtooth.y = (1 / 3) * SKETCH_SIZE + 3 * waveDistance * design["This Creature Is High"]
+
+          setBGWaveParams(p5_sk.bgSawtooth, design)
+          setBGWaveParams(p5_sk.bgTriangle, design)
+          setBGWaveParams(p5_sk.bgSquare, design)
+          setBGWaveParams(p5_sk.bgSine, design)
         })
-      )
-
-      user_avatars.forEach(design => {
-        p5_sk = new p5(sketch)
-        p5_sk.design = design
-        sketches.push(p5_sk)
-
-        let bgWaveHeight = (-1 / 3) * SKETCH_SIZE
-        let waveDistance = (1 / 6) * SKETCH_SIZE
-
-        p5_sk.bgSine = new SineWave(0, (1 / 3) * SKETCH_SIZE, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgSine.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgSine.color = p5_sk.color(design.Vibe1)
-        p5_sk.bgSine.fill = design["Full Vibe1"]
-        p5_sk.bgSquare = new SquareWave(0, (1 / 3) * SKETCH_SIZE + waveDistance, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgSquare.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgSquare.color = p5_sk.color(design.Vibe2)
-        p5_sk.bgSquare.fill = design["Full Vibe2"]
-
-        p5_sk.bgSquare.y = (1 / 3) * SKETCH_SIZE + waveDistance * design["This Creature Is High"]
-
-        p5_sk.bgTriangle = new TriangleWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 2, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgTriangle.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgTriangle.color = p5_sk.color(design.Vibe3)
-        p5_sk.bgTriangle.fill = design["Full Vibe3"]
-
-        p5_sk.bgTriangle.y = (1 / 3) * SKETCH_SIZE + 2 * waveDistance * design["This Creature Is High"]
-
-        p5_sk.bgSawtooth = new SawtoothWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 3, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgSawtooth.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgSawtooth.color = p5_sk.color(design.Vibe4)
-        p5_sk.bgSawtooth.fill = design["Full Vibe4"]
-
-        p5_sk.bgSawtooth.y = (1 / 3) * SKETCH_SIZE + 3 * waveDistance * design["This Creature Is High"]
-
-        setBGWaveParams(p5_sk.bgSawtooth, design)
-        setBGWaveParams(p5_sk.bgTriangle, design)
-        setBGWaveParams(p5_sk.bgSquare, design)
-        setBGWaveParams(p5_sk.bgSine, design)
-      })
-    },
-    errorObject => {
-      console.log("The read failed: " + errorObject.name)
-    }
+      },
+      errorObject => {
+        console.log("The read failed: " + errorObject.name)
+      }
   )
 }
 
@@ -137,60 +138,60 @@ const displayAllAvatars = () => {
   sketches_container.innerHTML = ""
   avatars = []
   database.ref("db/waves").on(
-    "value",
-    snapshot => {
-      Object.values(snapshot.val()).forEach(avat =>
-        Object.values(avat).forEach(params =>
-          Object.values(params).forEach(design => {
-            avatars.push(design)
-          })
+      "value",
+      snapshot => {
+        Object.values(snapshot.val()).forEach(avat =>
+            Object.values(avat).forEach(params =>
+                Object.values(params).forEach(design => {
+                  avatars.push(design)
+                })
+            )
         )
-      )
 
-      avatars.forEach(design => {
-        p5_sk = new p5(sketch)
+        avatars.forEach(design => {
+          p5_sk = new p5(sketch)
 
-        p5_sk.design = design
+          p5_sk.design = design
 
-        sketches.push(p5_sk)
+          sketches.push(p5_sk)
 
-        let bgWaveHeight = (-1 / 3) * SKETCH_SIZE
-        let waveDistance = (1 / 6) * SKETCH_SIZE
+          let bgWaveHeight = (-1 / 3) * SKETCH_SIZE
+          let waveDistance = (1 / 6) * SKETCH_SIZE
 
-        p5_sk.bgSine = new SineWave(0, (1 / 3) * SKETCH_SIZE, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgSine.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgSine.color = p5_sk.color(design.Vibe1)
-        p5_sk.bgSine.fill = design["Full Vibe1"]
-        p5_sk.bgSquare = new SquareWave(0, (1 / 3) * SKETCH_SIZE + waveDistance, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgSquare.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgSquare.color = p5_sk.color(design.Vibe2)
-        p5_sk.bgSquare.fill = design["Full Vibe2"]
+          p5_sk.bgSine = new SineWave(0, (1 / 3) * SKETCH_SIZE, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgSine.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgSine.color = p5_sk.color(design.Vibe1)
+          p5_sk.bgSine.fill = design["Full Vibe1"]
+          p5_sk.bgSquare = new SquareWave(0, (1 / 3) * SKETCH_SIZE + waveDistance, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgSquare.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgSquare.color = p5_sk.color(design.Vibe2)
+          p5_sk.bgSquare.fill = design["Full Vibe2"]
 
-        p5_sk.bgSquare.y = (1 / 3) * SKETCH_SIZE + waveDistance * design["This Creature Is High"]
+          p5_sk.bgSquare.y = (1 / 3) * SKETCH_SIZE + waveDistance * design["This Creature Is High"]
 
-        p5_sk.bgTriangle = new TriangleWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 2, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgTriangle.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgTriangle.color = p5_sk.color(design.Vibe3)
-        p5_sk.bgTriangle.fill = design["Full Vibe3"]
+          p5_sk.bgTriangle = new TriangleWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 2, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgTriangle.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgTriangle.color = p5_sk.color(design.Vibe3)
+          p5_sk.bgTriangle.fill = design["Full Vibe3"]
 
-        p5_sk.bgTriangle.y = (1 / 3) * SKETCH_SIZE + 2 * waveDistance * design["This Creature Is High"]
+          p5_sk.bgTriangle.y = (1 / 3) * SKETCH_SIZE + 2 * waveDistance * design["This Creature Is High"]
 
-        p5_sk.bgSawtooth = new SawtoothWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 3, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
-        p5_sk.bgSawtooth.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
-        p5_sk.bgSawtooth.color = p5_sk.color(design.Vibe4)
-        p5_sk.bgSawtooth.fill = design["Full Vibe4"]
+          p5_sk.bgSawtooth = new SawtoothWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 3, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+          p5_sk.bgSawtooth.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+          p5_sk.bgSawtooth.color = p5_sk.color(design.Vibe4)
+          p5_sk.bgSawtooth.fill = design["Full Vibe4"]
 
-        p5_sk.bgSawtooth.y = (1 / 3) * SKETCH_SIZE + 3 * waveDistance * design["This Creature Is High"]
+          p5_sk.bgSawtooth.y = (1 / 3) * SKETCH_SIZE + 3 * waveDistance * design["This Creature Is High"]
 
-        setBGWaveParams(p5_sk.bgSawtooth, design)
-        setBGWaveParams(p5_sk.bgTriangle, design)
-        setBGWaveParams(p5_sk.bgSquare, design)
-        setBGWaveParams(p5_sk.bgSine, design)
-      })
-    },
-    errorObject => {
-      console.log("The read failed: " + errorObject.name)
-    }
+          setBGWaveParams(p5_sk.bgSawtooth, design)
+          setBGWaveParams(p5_sk.bgTriangle, design)
+          setBGWaveParams(p5_sk.bgSquare, design)
+          setBGWaveParams(p5_sk.bgSine, design)
+        })
+      },
+      errorObject => {
+        console.log("The read failed: " + errorObject.name)
+      }
   )
 }
 
