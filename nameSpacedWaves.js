@@ -1,130 +1,225 @@
-class Wave {
-  constructor(x, y, w, h, ctx) {
-    this.ctx = ctx
-    this.x = x
-    this.y = y
-    this.w = w
-    this.h = h
-    this.color = this.ctx.color(0, 0, 0)
-    this.lineWidth = 10
-    this.amplitude = 1
-    this.waveNumber = 2
-    this.pulse = this.ctx.TWO_PI * 0.0 // 2 * PI * nombre de pulsation par seconde
-    this.phase = (3 * this.ctx.PI) / 2
-    this.lastUpdate = this.getTime()
-    this.fill = true
-    this.fillH = 0
-  }
+let avatars = []
+let sketches = []
+let p5_sk
+let SKETCH_SIZE = 114
+let GRID_CELL_SIZE = 111
+let user_avatars = []
+const input_user = document.querySelector("#input-find-my-avatars")
+const button_find = document.querySelector("#button-find-my-avatars")
+const sketches_container = document.querySelector("#dancing_floor")
+const user_span = document.querySelector("#span-user")
+let mySound = new Audio("ondes.mp4")
+mySound.loop = true
+mySound.play()
 
-  getTime() {
-    let d = new Date()
-    return d.getTime()
-  }
+const config = {
+  apiKey: "AIzaSyDfC7SqXVAGR3ekWeNKn5Ja-zxSthMOTzk",
+  authDomain: "ecal-cdfcf.firebaseapp.com",
+  projectId: "ecal-cdfcf",
+  storageBucket: "ecal-cdfcf.appspot.com",
+  messagingSenderId: "869616859356",
+  appId: "1:869616859356:web:91aa3726d48dd1344cdc19",
+  databaseURL: " https://ecal-cdfcf-default-rtdb.europe-west1.firebasedatabase.app"
+}
 
-  getAngle(x) {
-    return this.ctx.map(x, 0, this.w, this.phase, this.ctx.TWO_PI * this.waveNumber + this.phase)
-  }
+if (!firebase.apps.length) {
+  firebase.initializeApp(config)
+}
 
-  getWaveValue(angle) {
-    return this.amplitude * this.ctx.sin(angle)
-  }
+const database = firebase.database()
+const ref = database.ref("db")
 
-  getYValue(waveValue) {
-    return this.ctx.map(waveValue, -1, 1, 0, this.h)
-  }
-
-  update() {
-    let now = this.getTime()
-    let elapsed = now - this.lastUpdate
-    this.lastUpdate = now
-    this.phase += this.pulse * (elapsed / 1000)
-    this.phase %= this.ctx.TWO_PI
-  }
-
-  display() {
-    this.update()
-    this.ctx.push()
-    this.ctx.translate(this.x, this.y)
-
-    if (!this.fill) {
-      this.ctx.noFill()
-      this.ctx.stroke(this.color)
-      this.ctx.strokeWeight(this.lineWidth)
+const getUserAvatars = username => {
+  console.log(username)
+  ref.child(`waves/${username}`).once("value", snapshot => {
+    if (snapshot.exists()) {
+      user_span.style.display = "block"
+      user_span.innerHTML = `DaNCING WAVES OF ${input_user.value}`
+      displayMyAvatars(username)
     } else {
-      this.ctx.noStroke()
-      this.ctx.fill(this.color)
+      alert(`This user doesn't exist`)
     }
-    this.ctx.beginShape()
-    for (let x = 0; x < this.w; x++) {
-      this.ctx.vertex(x, this.getYValue(this.getWaveValue(this.getAngle(x))))
+  })
+}
+
+let sketch = p => {
+  p.bgSine
+  p.bgSquare
+  p.bgTriangle
+  p.bgSawtooth
+  p.p5Caneva
+  p.design
+
+  p.setup = () => {
+    p.p5Caneva = p.createCanvas(GRID_CELL_SIZE, GRID_CELL_SIZE)
+    p.p5Caneva.parent("dancing_floor")
+  }
+
+  p.draw = () => {
+    p.background(p.design.Aura)
+    p.bgSine.display()
+    p.bgSquare.display()
+    p.bgTriangle.display()
+    p.bgSawtooth.display()
+  }
+}
+
+function setWaveParams(wave, design) {
+  wave.amplitude = design["Saddy<, >Happy"]
+  wave.waveNumber = design["Introvert<,>Extravert"]
+  wave.pulse = p5_sk.TWO_PI * design.Energy
+}
+
+function setBGWaveParams(wave, design) {
+  wave.amplitude = design["Saddy<, >Happy"]
+  wave.waveNumber = design["Introvert<,>Extravert"]
+  wave.pulse = p5_sk.TWO_PI * design.Energy
+}
+
+const displayMyAvatars = username => {
+  sketches_container.innerHTML = ""
+  user_avatars = []
+  database.ref(`db/waves/${username}`).on(
+    "value",
+    snapshot => {
+      Object.values(snapshot.val()).forEach(avat =>
+        Object.values(avat).forEach(design => {
+          user_avatars.push(design)
+        })
+      )
+
+      user_avatars.forEach(design => {
+        p5_sk = new p5(sketch)
+        p5_sk.design = design
+        sketches.push(p5_sk)
+
+        let bgWaveHeight = (-1 / 3) * SKETCH_SIZE
+        let waveDistance = (1 / 6) * SKETCH_SIZE
+
+        p5_sk.bgSine = new SineWave(0, (1 / 3) * SKETCH_SIZE, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgSine.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgSine.color = p5_sk.color(design.Vibe1)
+        p5_sk.bgSine.fill = design["Full Vibe1"]
+        p5_sk.bgSquare = new SquareWave(0, (1 / 3) * SKETCH_SIZE + waveDistance, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgSquare.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgSquare.color = p5_sk.color(design.Vibe2)
+        p5_sk.bgSquare.fill = design["Full Vibe2"]
+
+        p5_sk.bgSquare.y = (1 / 3) * SKETCH_SIZE + waveDistance * design["This Creature Is High"]
+
+        p5_sk.bgTriangle = new TriangleWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 2, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgTriangle.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgTriangle.color = p5_sk.color(design.Vibe3)
+        p5_sk.bgTriangle.fill = design["Full Vibe3"]
+
+        p5_sk.bgTriangle.y = (1 / 3) * SKETCH_SIZE + 2 * waveDistance * design["This Creature Is High"]
+
+        p5_sk.bgSawtooth = new SawtoothWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 3, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgSawtooth.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgSawtooth.color = p5_sk.color(design.Vibe4)
+        p5_sk.bgSawtooth.fill = design["Full Vibe4"]
+
+        p5_sk.bgSawtooth.y = (1 / 3) * SKETCH_SIZE + 3 * waveDistance * design["This Creature Is High"]
+
+        setBGWaveParams(p5_sk.bgSawtooth, design)
+        setBGWaveParams(p5_sk.bgTriangle, design)
+        setBGWaveParams(p5_sk.bgSquare, design)
+        setBGWaveParams(p5_sk.bgSine, design)
+      })
+    },
+    errorObject => {
+      console.log("The read failed: " + errorObject.name)
     }
-    if (this.fill) {
-      this.ctx.vertex(this.w, this.fillH)
-      this.ctx.vertex(0, this.fillH)
-      this.ctx.endShape(this.ctx.CLOSE)
+  )
+}
+
+const displayAllAvatars = () => {
+  sketches_container.innerHTML = ""
+  avatars = []
+  database.ref("db/waves").on(
+    "value",
+    snapshot => {
+      Object.values(snapshot.val()).forEach(avat =>
+        Object.values(avat).forEach(params =>
+          Object.values(params).forEach(design => {
+            avatars.push(design)
+          })
+        )
+      )
+
+      avatars.forEach(design => {
+        p5_sk = new p5(sketch)
+
+        p5_sk.design = design
+
+        sketches.push(p5_sk)
+
+        let bgWaveHeight = (-1 / 3) * SKETCH_SIZE
+        let waveDistance = (1 / 6) * SKETCH_SIZE
+
+        p5_sk.bgSine = new SineWave(0, (1 / 3) * SKETCH_SIZE, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgSine.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgSine.color = p5_sk.color(design.Vibe1)
+        p5_sk.bgSine.fill = design["Full Vibe1"]
+        p5_sk.bgSquare = new SquareWave(0, (1 / 3) * SKETCH_SIZE + waveDistance, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgSquare.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgSquare.color = p5_sk.color(design.Vibe2)
+        p5_sk.bgSquare.fill = design["Full Vibe2"]
+
+        p5_sk.bgSquare.y = (1 / 3) * SKETCH_SIZE + waveDistance * design["This Creature Is High"]
+
+        p5_sk.bgTriangle = new TriangleWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 2, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgTriangle.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgTriangle.color = p5_sk.color(design.Vibe3)
+        p5_sk.bgTriangle.fill = design["Full Vibe3"]
+
+        p5_sk.bgTriangle.y = (1 / 3) * SKETCH_SIZE + 2 * waveDistance * design["This Creature Is High"]
+
+        p5_sk.bgSawtooth = new SawtoothWave(0, (1 / 3) * SKETCH_SIZE + waveDistance * 3, SKETCH_SIZE, bgWaveHeight, sketches[sketches.length - 1])
+        p5_sk.bgSawtooth.fillH = SKETCH_SIZE - (1 / 3) * SKETCH_SIZE
+        p5_sk.bgSawtooth.color = p5_sk.color(design.Vibe4)
+        p5_sk.bgSawtooth.fill = design["Full Vibe4"]
+
+        p5_sk.bgSawtooth.y = (1 / 3) * SKETCH_SIZE + 3 * waveDistance * design["This Creature Is High"]
+
+        setBGWaveParams(p5_sk.bgSawtooth, design)
+        setBGWaveParams(p5_sk.bgTriangle, design)
+        setBGWaveParams(p5_sk.bgSquare, design)
+        setBGWaveParams(p5_sk.bgSine, design)
+      })
+    },
+    errorObject => {
+      console.log("The read failed: " + errorObject.name)
+    }
+  )
+}
+
+input_user.addEventListener("change", e => {
+  if (input_user.value == "") {
+    user_span.style.display = "none"
+    displayAllAvatars()
+  }
+})
+
+input_user.addEventListener("keypress", e => {
+  if (e.key === "Enter") {
+    console.log(input_user.value)
+    if (input_user.value == "") {
+      user_span.style.display = "none"
+      displayAllAvatars()
     } else {
-      this.ctx.endShape()
-    }
-    this.ctx.noFill()
-    this.ctx.pop()
-  }
-}
-
-//======================================================================
-
-class SineWave extends Wave {
-  constructor(x, y, w, h, ctx) {
-    super(x, y, w, h, ctx)
-  }
-
-  getWaveValue(angle) {
-    return this.amplitude * this.ctx.sin(angle)
-  }
-}
-
-//======================================================================
-
-class SquareWave extends Wave {
-  constructor(x, y, w, h, ctx) {
-    super(x, y, w, h, ctx)
-    this.phase = -0.005
-  }
-
-  getWaveValue(angle) {
-    let newAngle = angle % this.ctx.TWO_PI
-    if (newAngle > this.ctx.PI || (newAngle < 0 && newAngle > -this.ctx.PI)) {
-      return -1 * this.amplitude
-    } else {
-      return 1 * this.amplitude
+      getUserAvatars(input_user.value)
     }
   }
-}
+})
 
-//======================================================================
-
-class TriangleWave extends Wave {
-  constructor(x, y, w, h, ctx) {
-    super(x, y, w, h, ctx)
-    this.phase = this.ctx.PI / 2 - 0.01
+button_find.addEventListener("click", e => {
+  if (input_user.value != "") {
+    user_span.style.display = "block"
+    user_span.innerHTML = `DaNCING WAVES OF ${input_user.value}`
+    displayMyAvatars(input_user.value)
   }
+})
 
-  getWaveValue(angle) {
-    //LA FONCTION DE L'ONDE QUI VA DEFINIR onde, PRENDS UN ANGLE EN PARAMETRE ET RETOURNE UNE VALEURE ENTRE -1 ET 1
-    return ((2 * this.amplitude) / this.ctx.PI) * this.ctx.asin(this.ctx.sin(angle))
-  }
-}
-
-//======================================================================
-
-class SawtoothWave extends Wave {
-  constructor(x, y, w, h, ctx) {
-    super(x, y, w, h, ctx)
-    this.phase = -0.01
-  }
-
-  getWaveValue(angle) {
-    return ((2 * this.amplitude) / this.ctx.PI) * this.ctx.atan(1 / this.ctx.tan(angle / 2))
-  }
-}
-
-//======================================================================
+displayAllAvatars()
+user_span.style.display = "none"
