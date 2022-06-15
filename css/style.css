@@ -159,7 +159,6 @@ body {
   margin-left: 2rem;
   transform: scale(2);
   z-index: 100;
-  border: 1px solid black;
 }
 
 .header-pink {
