@@ -6,6 +6,7 @@ let SKETCH_SIZE = 114
 let GRID_CELL_SIZE = 111
 let user_avatars = []
 let temp = ""
+let patchwork = []
 const input_user = document.querySelector("#input-find-my-avatars")
 const button_find = document.querySelector("#button-find-my-avatars")
 const sketches_container = document.querySelector("#dancing_floor")
@@ -54,13 +55,11 @@ let sketch = p => {
   }
 }
 
-
 function setWaveParams(wave, design) {
   wave.amplitude = design["Saddy<, >Happy"]
   wave.waveNumber = design["Introvert<,>Extravert"]
   wave.pulse = p5_sk.TWO_PI * design.Energy
 }
-
 
 const displayAllAvatars = () => {
   sketches_container.innerHTML = ""
@@ -90,7 +89,7 @@ const displayAllAvatars = () => {
 
 input_user.addEventListener("change", e => {
   if (input_user.value == "") {
-    sketchesMap.get(temp).forEach(sk => sk.p5Caneva.removeClass("my-avatars"))
+    patchwork.forEach(temp => sketchesMap.get(temp).forEach(sk => sk.p5Caneva.removeClass("my-avatars")))
   }
 })
 
@@ -107,7 +106,7 @@ button_find.addEventListener("click", e => {
     if (sketchesMap.has(input_user.value)) {
       console.log(sketchesMap.get(input_user.value))
       sketchesMap.get(input_user.value).forEach(sk => sk.p5Caneva.addClass("my-avatars"))
-      temp = input_user.value
+      patchwork.push(input_user.value)
     } else {
       alert(`This user doesn't exist`)
     }
