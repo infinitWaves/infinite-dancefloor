@@ -17,7 +17,6 @@
   src: url(../public/fonts/Roboto-Medium.ttf) format("truetype");
 }
 
-
 html,
 body {
   margin: 0 0 2rem 0;
@@ -31,7 +30,11 @@ body {
 
 #sketch-form {
   margin: 0 auto;
-  padding-top: 2rem;
+  padding-top: 1rem;
+}
+
+.close-button {
+  font-family: Rollergirls !important;
 }
 
 #sketch-container {
@@ -43,8 +46,6 @@ body {
   justify-content: center;
   overflow: hidden;
 }
-
-
 
 #canvas0 {
   display: block;
@@ -66,18 +67,16 @@ body {
 
 #dancing_floor {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  margin-left: 5px;
-  margin-right: 10px;
-  width: 100%;
+  margin: 0 auto;
+  width: fit-content;
   padding: 0 1.5rem;
 }
 
 .header-flex {
   display: flex;
   flex-wrap: wrap;
-  width: 90%;
-  position: relative;
   margin-left: 2rem;
   margin-bottom: 1rem;
 }
@@ -104,7 +103,6 @@ body {
 .btn-vib-search {
   position: relative;
   bottom: 4px;
-  border: 4px solid #ffffff;
   border-radius: 32px;
   font-family: Rollergirls;
   font-style: normal;
@@ -113,46 +111,67 @@ body {
   margin-top: 1rem;
 }
 
+.input-group {
+  align-items: stretch;
+  height: fit-content;
+}
+
 .input-vib-search {
   position: relative;
-  bottom: 2.3px;
-  border: 4px solid #ffffff;
+  bottom: 4.3px;
+  font-size: small;
   border-radius: 32px;
   font-family: Rollergirls;
   font-style: normal;
   font-weight: 400;
-  color: #ffffff;
   margin-top: 1rem;
 }
 
 .btn-color-1 {
   background: #ffd4a2;
+  color: #94b2ff;
+  white-space: nowrap;
 }
 
 .btn-color-2 {
   background: #94b2ff;
+  color: #a6ff7c;
 }
 
 .btn-color-3 {
+  color: #94b2ff;
   background: #ffbbf0;
 }
 
 .btn-color-4 {
+  color: #94b2ff;
   background: #a6ff7c;
 }
 
-.zoom-in:hover{
+.zoom-in:hover {
   margin-left: 2rem;
   transform: scale(2);
   z-index: 100;
+  border: black;
+}
+
+.my-avatars {
+  margin-left: 2rem;
+  transform: scale(2);
+  z-index: 100;
+  border: 1px solid black;
 }
 
 .header-pink {
   position: absolute;
   background: #e9bbff;
   width: 100%;
-  height: 15rem;
+  height: 16rem;
   top: -8rem;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   border-bottom-left-radius: 100px;
   border-bottom-right-radius: 100px;
 }
@@ -183,11 +202,15 @@ body {
 }
 
 #GUI {
-  background: rgba(196, 196, 196, 0.8);
-  border-radius: 64px;
+  border: 1px solid black;
+  border-radius: 1px;
   width: fit-content;
   height: fit-content;
   position: relative;
+}
+
+.dg {
+  margin: 0 !important;
 }
 
 #gui {
@@ -207,10 +230,14 @@ body {
   text-decoration: none;
 }
 
-.btn-index{
+.btn-index {
   margin: 0 auto !important;
   display: flex;
   justify-content: center;
+}
+
+.user-fields {
+  width: auto !important;
 }
 
 #splash-screen {
@@ -258,6 +285,7 @@ body {
 
 .inputs {
   font-family: Rollergirls;
+  width: fit-content;
 }
 
 .fa-b {
@@ -265,7 +293,8 @@ body {
 }
 
 #username {
-  border-radius: 4px;
+  bottom: 0px !important;
+  margin-top: 0px !important;
 }
 
 #span-user {
@@ -276,21 +305,31 @@ body {
   color: #aaaaaa;
 }
 
-@media only screen and (max-width: 593px) {
+@media only screen and (max-width: 770px) {
   .header-pink {
     position: absolute;
     background: #e9bbff;
     width: 100%;
-    height: 15rem;
+    height: 22rem;
     top: -2.2rem;
     border-bottom-left-radius: 100px;
     border-bottom-right-radius: 100px;
   }
+}
 
+@media only screen and (max-width: 995px) {
+  .header-pink {
+    position: absolute;
+    background: #e9bbff;
+    width: 100%;
+    height: 14rem;
+    top: -2.2rem;
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+  }
 }
 
 @media only screen and (max-width: 800px) {
-
   #canvas0 {
     border: 4px !important;
     width: 85% !important;

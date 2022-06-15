@@ -128,10 +128,9 @@ function setup() {
   btnclosesblash.addEventListener("click", () => {
     let splash = document.querySelector("#splash-screen")
     splash.style.display = "none"
-    mySound.play()
+    //mySound.play()
   })
 }
-
 
 function draw() {
   background(PARAMS.Aura)
