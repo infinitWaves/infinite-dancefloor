@@ -12,7 +12,7 @@ const sketches_container = document.querySelector("#dancing_floor")
 const user_span = document.querySelector("#span-user")
 let mySound = new Audio("ondes.mp4")
 mySound.loop = true
-//mySound.play()
+mySound.play()
 
 const config = {
   apiKey: "AIzaSyDfC7SqXVAGR3ekWeNKn5Ja-zxSthMOTzk",
@@ -54,37 +54,13 @@ let sketch = p => {
   }
 }
 
+
 function setWaveParams(wave, design) {
   wave.amplitude = design["Saddy<, >Happy"]
   wave.waveNumber = design["Introvert<,>Extravert"]
   wave.pulse = p5_sk.TWO_PI * design.Energy
 }
 
-function setBGWaveParams(wave, design) {
-  wave.amplitude = design["Saddy<, >Happy"]
-  wave.waveNumber = design["Introvert<,>Extravert"]
-  wave.pulse = p5_sk.TWO_PI * design.Energy
-}
-
-const displayMyAvatars = username => {
-  sketches_container.innerHTML = ""
-  user_avatars = []
-  database.ref(`db/waves/${username}`).on(
-    "value",
-    snapshot => {
-      Object.values(snapshot.val()).forEach(avat =>
-        Object.values(avat).forEach(design => {
-          user_avatars.push(design)
-        })
-      )
-
-      avatars.filter(design => design.username == username).forEach(design => design.addClass("my-avatars"))
-    },
-    errorObject => {
-      console.log("The read failed: " + errorObject.name)
-    }
-  )
-}
 
 const displayAllAvatars = () => {
   sketches_container.innerHTML = ""
@@ -177,8 +153,8 @@ function displaySketch(design, userSketches = []) {
 
   p5_sk.bgSawtooth.y = (1 / 3) * SKETCH_SIZE + 3 * waveDistance * design["This Creature Is High"]
 
-  setBGWaveParams(p5_sk.bgSawtooth, design)
-  setBGWaveParams(p5_sk.bgTriangle, design)
-  setBGWaveParams(p5_sk.bgSquare, design)
-  setBGWaveParams(p5_sk.bgSine, design)
+  setWaveParams(p5_sk.bgSawtooth, design)
+  setWaveParams(p5_sk.bgTriangle, design)
+  setWaveParams(p5_sk.bgSquare, design)
+  setWaveParams(p5_sk.bgSine, design)
 }
